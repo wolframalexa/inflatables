@@ -27,7 +27,7 @@ plt.plot(dot2[0], dot2[1], 'ro')
 plt.plot(dot3[0], dot3[1], 'ro')
 
 # plots voronoi diagram
-points - np.array([dot1, dot2, dot3])
+points = np.array([dot1, dot2, dot3, circ]) # TODO: incorporate circle into diagram
 vor = Voronoi(points)
 fig = voronoi_plot_2d(vor)
 plt.show()
