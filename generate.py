@@ -16,12 +16,14 @@ dot3 = (15, 26)
 
 # plot inflatable
 plt.axis([0, 30, 0, 30])
-plt.axis("equal")
+plt.gca().set_aspect('equal', adjustable='box')
 
-c = plt.Circle(circ, radius=rad)
+c = plt.Circle(circ, radius = rad)
 plt.gca().add_artist(c)
 
 plt.plot(dot1[0], dot1[1], 'ro')
+plt.plot(dot2[0], dot2[1], 'ro')
+plt.plot(dot3[0], dot3[1], 'ro')
 
 
 # function for rejection sampling
