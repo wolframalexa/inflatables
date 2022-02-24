@@ -1,0 +1,4 @@
+list of rules:
+- not too close to the edge
+- not too close to other circles/points
+- circle is not too small or too large
