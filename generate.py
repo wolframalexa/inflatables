@@ -20,7 +20,7 @@ def circle_to_hexagon(r, x, y):
 #Mixture distribution (aka u can make the means and covariance matrix anything that you want)
 def getpx(pos):
     return multivariate_normal.pdf(pos, [5, 5], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [8, 8], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [2, 9], [[1, 0], [0, 1]])
- 
+
 #Large gaussian encompassing the entire mixture
 def getqx(pos):
     return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
@@ -39,7 +39,7 @@ while i < numdots + numcircles:
     test = np.zeros([1,2])
     test = np.random.multivariate_normal([6, 6], [[12, 0], [0, 12]])
     u = np.random.uniform(0, (k*getqx(test)))
-   
+
     if u <= getpx(test):
         samples[i, :] = test # center of circle is the last "sample"
         i+=1
