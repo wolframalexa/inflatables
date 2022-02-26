@@ -2,3 +2,10 @@ list of rules:
 - not too close to the edge
 - not too close to other circles/points
 - circle is not too small or too large
+- should fail or stop drawing if number of points is too large (for example, 100 pts)
+
+future:
+- update the Gaussian map at every step
+- analyze it with Voronoi - does it look good? we can play with the PDF
+- what if you draw the lines first? and then place the pointso
+
