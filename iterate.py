@@ -4,14 +4,13 @@ import math
 from scipy.stats import multivariate_normal
 from scipy.stats import uniform
 
-
 def followsRules(circles, points):
 	out = True
 	# format of circles: [[x, y, rad], ]
 	# format of points: [[x, y], ]
 
-	edgelim = 1 # distance to edge [in]
-	interlim = 2 # distance from element to element [in]
+	edgelim = .5 # distance to edge [in]
+	interlim = .5 # distance from element to element [in]
 
 	if points is None:
 		pass
@@ -95,16 +94,16 @@ def incircle(point, circle):
 
 # Mixture distribution (aka u can make the means and covariance matrix anything that you want)
 def getpx(pos):
-    return multivariate_normal.pdf(pos, [5, 5], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [8, 8], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [2, 9], [[1, 0], [0, 1]])
+    return multivariate_normal.pdf(pos, [3, 2], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 1], [[1, 0], [0, 1]])
 
 # Large gaussian encompassing the entire mixture
 def getqx(pos):
     return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 2000
+iterations = 20
 numcircles = 1
-numdots = 2
+numdots = 4
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -118,7 +117,7 @@ i = 1
 count = 0
 
 # place circles first
-while (count < numcircles) and (i < iterations): # time out if over some max # of iterations
+while (count < numcircles): # time out if over some max # of iterations
 	i += 1
 #	print("Number of nonzero:", np.count_nonzero(circles))
 
@@ -147,12 +146,12 @@ while (count < numcircles) and (i < iterations): # time out if over some max # o
 
 # generate dots
 count = 0
-while (count < numdots) and (i < iterations):
+x, y = np.mgrid[0:12:.01, 0:12:.01]
+pos = np.dstack((x, y))
+
+while (count < numdots):
 #	print("Nonzero dots:", np.count_nonzero(dots))
 	i += 1
-
-	x, y = np.mgrid[0:12:.01, 0:12:.01]
-	pos = np.dstack((x, y))
 
 	k = np.amax(np.divide(getpx(pos), getqx(pos)))
 	samples = np.zeros([1, 2])
