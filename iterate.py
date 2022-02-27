@@ -16,15 +16,14 @@ def followsRules(circles, points):
 		pass
 	else:
 		for point in points:
-
-			# element is not too close to edge
-
+		# element is not too close to edge
+			print(point)
 			if (point[0] > 12 - edgelim) or (point[0] < edgelim) or (point[1] > 12 - edgelim) or (point[1] < edgelim):
 				out = False
+				print("Too close to edge")
 				break
 
 			# element is not too close to other elements
-
 			surround = [point[0], point[1], interlim]
 			counter = 0 # use counter rather than t/f bc the point should be within its own circle (when point = point2)
 
@@ -34,6 +33,7 @@ def followsRules(circles, points):
 
 				if counter > 1:
 					out = False
+					print("Too close to others")
 					break
 
 	for circle in circles:
@@ -45,6 +45,7 @@ def followsRules(circles, points):
 
 		for i in extremes:
 			if (i[0] > 12 - edgelim) or (i[0] < edgelim):
+				print("Circle too close to edge")
 				out = False
 				break
 
@@ -55,6 +56,7 @@ def followsRules(circles, points):
 			if incircle(point2, surround):
 				counter += 1
 			if counter > 1:
+				print("circle too close to others")
 				out = False
 				break
 	return(out)
@@ -103,7 +105,7 @@ def getqx(pos):
 
 iterations = 20
 numcircles = 1
-numdots = 4
+numdots = 2
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -132,7 +134,7 @@ while (count < numcircles): # time out if over some max # of iterations
 	print(count)
 #	print("Proposed circles:", pro_circles)
 	pro_circles[count, :] = curr
-	
+
 
 	itergraph(pro_circles, pro_dots)
 
@@ -166,8 +168,9 @@ while (count < numdots):
 
 		itergraph(circles, pro_dots)
 
+
 		# check if follows rules
-		if followsRules(circles, pro_dots):
+		if followsRules(circles, pro_dots[:count, :]):
 			dots[count, :] = test
 			count += 1
 			print("Dots:", dots)
