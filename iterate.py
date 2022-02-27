@@ -110,8 +110,9 @@ circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
 
 pro_circles = np.zeros((numcircles, 3)) # proposed circles and dots
+# print("Proposed circles initialized:", pro_circles)
 pro_dots = np.zeros((numdots, 2))
-
+# print("Proposed Dots Initialized:", pro_dots)
 
 i = 1
 count = 0
@@ -129,8 +130,10 @@ while (count < numcircles) and (i < iterations): # time out if over some max # o
 	curr = np.array([x, y, rad])
 #	print("Current:", curr)
 #	print("Proposed circles:", pro_circles)
+	print(count)
+	print("Proposed circles:", pro_circles)
 	pro_circles[count, :] = curr
-#	print("Proposed circles:", pro_circles)
+	
 
 	itergraph(pro_circles, pro_dots)
 
@@ -139,9 +142,6 @@ while (count < numcircles) and (i < iterations): # time out if over some max # o
 		circles[count, :] = curr
 		count += 1
 		print("Circles:", circles)
-	else:
-		pro_circles = np.delete(pro_circles,-1,0) # remove current circle
-
 
 
 
@@ -172,18 +172,4 @@ while (count < numdots) and (i < iterations):
 		dots[count, :] = test
 		count += 1
 		print("Dots:", dots)
-	else:
-		pro_dots = np.delete(pro_dots, -1, 0) # remove current dot
-
-
-	# plot the image as it is
-#	plt.axis([0, 12, 0, 12])
-
-#	for circle in circles:
-#		c = plt.Circle((circle[0], circle[1]), radius = circle[2])
-#		plt.gca().add_artist(c)
-#	plt.scatter(dots[:,0], dots[:,1])
-#	plt.show()
-
-#	path = "../plots/" + str(i) + ".jpg"
-#	plt.savefig(path)
+	# else, pro_dots[count,:] is replaced at the following loop so no need to handle
