@@ -13,26 +13,30 @@ def followsRules(circles, points):
 
 	edgelim = 1 # distance to edge [in]
 	interlim = 2 # distance from element to element
-	for point in points:
 
-		# element is not too close to edge
+	if points is None:
+		pass
+	else:
+		for point in points:
 
-		if (point[0] > 12 - edgelim) or (point[0] < edgelim) or (point[1] > 12 - edgelim) or (point[1] < edgelim):
-			out = False
-			break
+			# element is not too close to edge
 
-		# element is not too close to other elements
-
-		surround = [point[0], point[1], interlim]
-		counter = 0 # use counter rather than t/f bc the point should be within its own circle (when point = point2)
-
-		for point2 in points:
-			if incircle(point2, surround):
-				counter += 1
-
-			if counter > 1:
+			if (point[0] > 12 - edgelim) or (point[0] < edgelim) or (point[1] > 12 - edgelim) or (point[1] < edgelim):
 				out = False
 				break
+
+			# element is not too close to other elements
+
+			surround = [point[0], point[1], interlim]
+			counter = 0 # use counter rather than t/f bc the point should be within its own circle (when point = point2)
+
+			for point2 in points:
+				if incircle(point2, surround):
+					counter += 1
+
+				if counter > 1:
+					out = False
+					break
 
 	for circle in circles:
 		# element is not too close to edge
