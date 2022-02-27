@@ -87,46 +87,60 @@ iterations = 10
 numcircles = 1
 numdots = 2
 
-circles = np.zeros((numcircles, 3))
-dots = np.zeros((numdots, 2))
+circles = []
+dots = []
 
-pro_circles = np.zeros((numcircles, 3)) # proposed circles and dots
-pro_dots = np.zeros((numdots, 2))
+pro_circles = [] # proposed circles and dots
+pro_dots = []
 
 # TODO: logic currently doesn't allow for re-use of points - needs to be fixed (eg if a circle is accepted at step 1, it should remain accepted all the way to step 10)
 
-for i in range(0, iterations):
+it = 1
+
+# place circles first
+while len(circles) < numcircles:
+	i += 1
+
 	# generate circle
 	rad = np.random.uniform(1,3) # random circle radius
 	x = np.random.uniform(1,11)
 	y = np.random.uniform(1,11)
 
-	pro_circles[0] = [x, y, rad]
+	curr = [x, y, rad]
+	pro_circles = pro_circles.append(curr)
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles, []):
-		circles = pro_circles
+		circles.append(curr)
+	else:
+		pro_circles.pop() # remove current circle
+
+
+
+
+while len(dots) < numdots:
+	i += 1
 
 	# generate dots
 	x, y = np.mgrid[0:12:.01, 0:12:.01]
 	pos = np.dstack((x, y))
 
 	k = np.amax(np.divide(getpx(pos), getqx(pos)))
-	samples = np.zeros([numdots + numcircles, 2])
-	i = 0
+	samples = np.zeros([1, 2])
 
-	while i < numdots:
-	    test = np.zeros([1,2])
-	    test = np.random.multivariate_normal([6, 6], [[12, 0], [0, 12]])
-	    u = np.random.uniform(0, (k*getqx(test)))
+	test = np.zeros([1,2])
+	test = np.random.multivariate_normal([6, 6], [[12, 0], [0, 12]])
+	u = np.random.uniform(0, (k*getqx(test)))
 
-	    if u <= getpx(test):
-	        samples[i, :] = test
-	        i+=1
+	if u <= getpx(test):
+		pro_dots.append(test)
 
 	# check if follows rules
-	if followsRules(pro_circles, samples):
-		points = samples
+	if followsRules(circles, pro_dots):
+		dots.append(test)
+	else:
+		pro_dots.pop()
+
 
 	# plot the image as it is
 	plt.axis([0, 12, 0, 12])
@@ -134,7 +148,7 @@ for i in range(0, iterations):
 	for circle in circles:
 		c = plt.Circle((circle[0], circle[1]), radius = circle[2])
 		plt.gca().add_artist(c)
-	plt.scatter(points[:,0], points[:,1])
+	plt.scatter(dots[:,0], dots[:,1])
 	plt.show()
 
 	path = "../plots/" + str(i) + ".jpg"
