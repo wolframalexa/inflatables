@@ -11,7 +11,7 @@ def followsRules(circles, points):
 	# format of points: [[x, y], ]
 
 	edgelim = 1 # distance to edge [in]
-	interlim = 2 # distance from element to element
+	interlim = 2 # distance from element to element [in]
 
 	if points is None:
 		pass
@@ -76,7 +76,7 @@ def itergraph(circles, points):
 		c = plt.Circle((circle[0], circle[1]), circle[2], fill=False)
 		fig.gca().add_artist(c)
 
-	print("Points:", points)
+	#print("Points:", points)
 	plt.scatter(points[:,0], points[:,1], s=20, color='black')
 
 def dist(a, b):
@@ -102,7 +102,7 @@ def getqx(pos):
     return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 10
+iterations = 2000
 numcircles = 1
 numdots = 2
 
@@ -120,10 +120,10 @@ count = 0
 # place circles first
 while (count < numcircles) and (i < iterations): # time out if over some max # of iterations
 	i += 1
-	print("Number of nonzero:", np.count_nonzero(circles))
+#	print("Number of nonzero:", np.count_nonzero(circles))
 
 	# generate circle
-	rad = np.random.uniform(1,3) # random circle radius
+	rad = np.random.uniform(1,2) # random circle radius
 	x = np.random.uniform(1,11)
 	y = np.random.uniform(1,11)
 
@@ -131,7 +131,7 @@ while (count < numcircles) and (i < iterations): # time out if over some max # o
 #	print("Current:", curr)
 #	print("Proposed circles:", pro_circles)
 	print(count)
-	print("Proposed circles:", pro_circles)
+#	print("Proposed circles:", pro_circles)
 	pro_circles[count, :] = curr
 	
 
@@ -163,13 +163,13 @@ while (count < numdots) and (i < iterations):
 
 	if u <= getpx(test):
 		pro_dots[count, :] = test
-	print("Proposed dots:", pro_dots)
+	#print("Proposed dots:", pro_dots)
 
-	itergraph(circles, pro_dots)
+		itergraph(circles, pro_dots)
 
-	# check if follows rules
-	if followsRules(circles, pro_dots):
-		dots[count, :] = test
-		count += 1
-		print("Dots:", dots)
-	# else, pro_dots[count,:] is replaced at the following loop so no need to handle
+		# check if follows rules
+		if followsRules(circles, pro_dots):
+			dots[count, :] = test
+			count += 1
+			print("Dots:", dots)
+		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
