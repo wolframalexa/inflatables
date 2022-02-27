@@ -133,6 +133,7 @@ while (count < numcircles): # time out if over some max # of iterations
 #	print("Proposed circles:", pro_circles)
 	print(count)
 #	print("Proposed circles:", pro_circles)
+	pro_circles = circles
 	pro_circles[count, :] = curr
 
 
@@ -141,10 +142,10 @@ while (count < numcircles): # time out if over some max # of iterations
 	tracker += 1
 
 	# meets configuration? if yes - then accept
-	if followsRules(pro_circles[:count, :], []):
-		circles[count, :] = curr
-		count += 1
-		print("Circles:", circles)
+	if followsRules(pro_circles[:count+1, :], []):
+			circles[count, :] = curr
+			count += 1
+			print("Circles:", circles)
 
 
 
