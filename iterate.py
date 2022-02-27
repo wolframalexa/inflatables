@@ -9,8 +9,8 @@ def followsRules(circles, points):
 	# format of circles: [[x, y, rad], ]
 	# format of points: [[x, y], ]
 
-	edgelim = .5 # distance to edge [in]
-	interlim = .5 # distance from element to element [in]
+	edgelim = 1 # distance to edge [in]
+	interlim = 1 # distance from element to element [in]
 
 	if points is None:
 		pass
@@ -96,7 +96,7 @@ def incircle(point, circle):
 
 # Mixture distribution (aka u can make the means and covariance matrix anything that you want)
 def getpx(pos):
-    return multivariate_normal.pdf(pos, [3, 2], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 1], [[1, 0], [0, 1]])
+    return multivariate_normal.pdf(pos, [3, 2], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 1], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [1, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [5, 5], [[1, 0], [0, 1]])
 
 # Large gaussian encompassing the entire mixture
 def getqx(pos):
@@ -105,7 +105,7 @@ def getqx(pos):
 
 iterations = 20
 numcircles = 1
-numdots = 2
+numdots = 7
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -117,7 +117,7 @@ pro_dots = np.zeros((numdots, 2))
 
 i = 1
 count = 0
-
+tracker = 1
 # place circles first
 while (count < numcircles): # time out if over some max # of iterations
 	i += 1
@@ -137,6 +137,8 @@ while (count < numcircles): # time out if over some max # of iterations
 
 
 	itergraph(pro_circles, pro_dots)
+	plt.savefig('images/img' + str(tracker) + '.png')
+	tracker += 1
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles, []):
@@ -161,16 +163,18 @@ while (count < numdots):
 	test = np.zeros([1,2])
 	test = np.random.multivariate_normal([6, 6], [[12, 0], [0, 12]])
 	u = np.random.uniform(0, (k*getqx(test)))
+	pro_dots = dots
 
 	if u <= getpx(test):
 		pro_dots[count, :] = test
-	#print("Proposed dots:", pro_dots)
+		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-
+		plt.savefig('images/img' + str(tracker) + '.png')
+		tracker += 1
 
 		# check if follows rules
-		if followsRules(circles, pro_dots[:count, :]):
+		if followsRules(circles, pro_dots[:count+1, :]):
 			dots[count, :] = test
 			count += 1
 			print("Dots:", dots)
