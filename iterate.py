@@ -99,7 +99,7 @@ pro_dots = []
 
 # TODO: logic currently doesn't allow for re-use of points - needs to be fixed (eg if a circle is accepted at step 1, it should remain accepted all the way to step 10)
 
-it = 1
+i = 1
 
 # place circles first
 while len(circles) < numcircles:
@@ -111,7 +111,9 @@ while len(circles) < numcircles:
 	y = np.random.uniform(1,11)
 
 	curr = [x, y, rad]
+	print(curr)
 	pro_circles = pro_circles.append(curr)
+	print(pro_circles)
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles, []):
