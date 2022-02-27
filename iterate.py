@@ -139,7 +139,7 @@ while (count < numcircles): # time out if over some max # of iterations
 	itergraph(pro_circles, pro_dots)
 
 	# meets configuration? if yes - then accept
-	if followsRules(pro_circles, []):
+	if followsRules(pro_circles[:count, :], []):
 		circles[count, :] = curr
 		count += 1
 		print("Circles:", circles)
