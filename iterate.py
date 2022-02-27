@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.spatial import Voronoi, voronoi_plot_2d
 import math
 from scipy.stats import multivariate_normal
 from scipy.stats import uniform
@@ -64,6 +63,22 @@ def followsRules(circles, points):
 #TODO: does not currently check circle-to-circle
 #TODO: circle radius currently not being checked
 
+
+def itergraph(circles, points):
+	# graphs circles and points as they currently are
+	# initialize plot
+	fig = plt.figure()
+	plt.axis([0, 12, 0, 12])
+	plt.gca().set_aspect('equal', adjustable='box')
+
+	# plot circles
+	for circle in circles:
+		c = plt.Circle((circle[0], circle[1]), circle[2], fill=False)
+		fig.gca().add_artist(c)
+
+	print("Points:", points)
+	plt.scatter(points[:,0], points[:,1], s=20, color='black')
+
 def dist(a, b):
 	# a & b are points in numpy arrays
 	return(np.sqrt(np.sum(np.square(a - b))))
@@ -102,7 +117,7 @@ i = 1
 count = 0
 
 # place circles first
-while np.count_nonzero(circles) < numcircles:
+while (count < numcircles) and (i < iterations): # time out if over some max # of iterations
 	i += 1
 	print("Number of nonzero:", np.count_nonzero(circles))
 
@@ -117,6 +132,8 @@ while np.count_nonzero(circles) < numcircles:
 	pro_circles[count, :] = curr
 #	print("Proposed circles:", pro_circles)
 
+	itergraph(pro_circles, pro_dots)
+
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles, []):
 		circles[count, :] = curr
@@ -127,9 +144,10 @@ while np.count_nonzero(circles) < numcircles:
 
 
 
+
 # generate dots
 count = 0
-while count < numdots:
+while (count < numdots) and (i < iterations):
 #	print("Nonzero dots:", np.count_nonzero(dots))
 	i += 1
 
@@ -144,8 +162,11 @@ while count < numdots:
 	u = np.random.uniform(0, (k*getqx(test)))
 
 	if u <= getpx(test):
-		pro_dots.append(test)
+		pro_dots[count, :] = test
 	print("Proposed dots:", pro_dots)
+
+	itergraph(circles, pro_dots)
+
 	# check if follows rules
 	if followsRules(circles, pro_dots):
 		dots[count, :] = test
