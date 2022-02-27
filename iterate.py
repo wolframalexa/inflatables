@@ -91,43 +91,48 @@ iterations = 10
 numcircles = 1
 numdots = 2
 
-circles = []
-dots = []
+circles = np.zeros((numcircles, 3))
+dots = np.zeros((numdots, 2))
 
-pro_circles = [] # proposed circles and dots
-pro_dots = []
+pro_circles = np.zeros((numcircles, 3)) # proposed circles and dots
+pro_dots = np.zeros((numdots, 2))
 
-# TODO: logic currently doesn't allow for re-use of points - needs to be fixed (eg if a circle is accepted at step 1, it should remain accepted all the way to step 10)
 
 i = 1
+count = 0
 
 # place circles first
-while len(circles) < numcircles:
+while np.count_nonzero(circles) < numcircles:
 	i += 1
+	print("Number of nonzero:", np.count_nonzero(circles))
 
 	# generate circle
 	rad = np.random.uniform(1,3) # random circle radius
 	x = np.random.uniform(1,11)
 	y = np.random.uniform(1,11)
 
-	curr = [x, y, rad]
-	print(curr)
-	pro_circles = pro_circles.append(curr)
-	print(pro_circles)
+	curr = np.array([x, y, rad])
+#	print("Current:", curr)
+#	print("Proposed circles:", pro_circles)
+	pro_circles[count, :] = curr
+#	print("Proposed circles:", pro_circles)
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles, []):
-		circles.append(curr)
+		circles[count, :] = curr
+		count += 1
+		print("Circles:", circles)
 	else:
-		pro_circles.pop() # remove current circle
+		pro_circles = np.delete(pro_circles,-1,0) # remove current circle
 
 
 
-
-while len(dots) < numdots:
+# generate dots
+count = 0
+while count < numdots:
+#	print("Nonzero dots:", np.count_nonzero(dots))
 	i += 1
 
-	# generate dots
 	x, y = np.mgrid[0:12:.01, 0:12:.01]
 	pos = np.dstack((x, y))
 
@@ -140,22 +145,24 @@ while len(dots) < numdots:
 
 	if u <= getpx(test):
 		pro_dots.append(test)
-
+	print("Proposed dots:", pro_dots)
 	# check if follows rules
 	if followsRules(circles, pro_dots):
-		dots.append(test)
+		dots[count, :] = test
+		count += 1
+		print("Dots:", dots)
 	else:
-		pro_dots.pop()
+		pro_dots = np.delete(pro_dots, -1, 0) # remove current dot
 
 
 	# plot the image as it is
-	plt.axis([0, 12, 0, 12])
+#	plt.axis([0, 12, 0, 12])
 
-	for circle in circles:
-		c = plt.Circle((circle[0], circle[1]), radius = circle[2])
-		plt.gca().add_artist(c)
-	plt.scatter(dots[:,0], dots[:,1])
-	plt.show()
+#	for circle in circles:
+#		c = plt.Circle((circle[0], circle[1]), radius = circle[2])
+#		plt.gca().add_artist(c)
+#	plt.scatter(dots[:,0], dots[:,1])
+#	plt.show()
 
-	path = "../plots/" + str(i) + ".jpg"
-	plt.savefig(path)
+#	path = "../plots/" + str(i) + ".jpg"
+#	plt.savefig(path)
