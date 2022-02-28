@@ -63,12 +63,16 @@ def followsRules(circles, points):
 		for circle2 in circles: # check that circles do not intersect
 			dist = (circle[0] - circle2[0]) ** 2 + (circle[1] - circle2[1]) ** 2
 			rad = (circle[2] + circle2[2]) ** 2;
+
+			smaller = min(circle[2], circle2[2])
+			larger = max(circle[2], circle2[2])
+
 			if (dist >= rad + interlim):
 			        out = False
 				print("Circles intersect")
 				break
 
-			if (math.sqrt(dist) + circle2[2] <= circle[2]) or (math.sqrt(dist) + circle[2] <= circle2[2]):
+			if math.sqrt(dist) + smaller <= larger:
 				out = False
 				print("One circle inside another")
 				break
