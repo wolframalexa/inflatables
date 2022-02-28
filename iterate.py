@@ -17,7 +17,7 @@ def followsRules(circles, points):
 	else:
 		for point in points:
 		# element is not too close to edge
-			print(point)
+			# print(point)
 			if (point[0] > 12 - edgelim) or (point[0] < edgelim) or (point[1] > 12 - edgelim) or (point[1] < edgelim):
 				out = False
 				print("Too close to edge")
@@ -59,11 +59,14 @@ def followsRules(circles, points):
 				print("circle too close to others")
 				out = False
 				break
+
+		for circle2 in circles: # check that circles do not intersect
+			dist = (circle[0] - circle2[0]) ** 2 + (circle[1] - circle2[1]) ** 2
+			rad = (circle[2] + circle2[2]) ** 2;
+			if (dist >= rad + interlim):
+			        out = False
+				print("Circles intersect")
 	return(out)
-
-#TODO: does not currently check circle-to-circle
-#TODO: circle radius currently not being checked
-
 
 def itergraph(circles, points):
 	# graphs circles and points as they currently are
@@ -80,10 +83,6 @@ def itergraph(circles, points):
 	#print("Points:", points)
 	plt.scatter(points[:,0], points[:,1], s=20, color='black')
 
-def dist(a, b):
-	# a & b are points in numpy arrays
-	return(np.sqrt(np.sum(np.square(a - b))))
-
 def incircle(point, circle):
 	x = circle[0]
 	y = circle[1]
@@ -96,11 +95,15 @@ def incircle(point, circle):
 
 # Mixture distribution (aka u can make the means and covariance matrix anything that you want)
 def getpx(pos):
-    return multivariate_normal.pdf(pos, [3, 2], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [9, 1], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [1, 9], [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, [5, 5], [[1, 0], [0, 1]])
+	center1 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
+	center2 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
+	center3 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
+	return multivariate_normal.pdf(pos, center1, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center2, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center3, [[1, 0], [0, 1]])
+	return 0
 
 # Large gaussian encompassing the entire mixture
 def getqx(pos):
-    return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
+	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
 iterations = 20
@@ -115,12 +118,10 @@ pro_circles = np.zeros((numcircles, 3)) # proposed circles and dots
 pro_dots = np.zeros((numdots, 2))
 # print("Proposed Dots Initialized:", pro_dots)
 
-i = 1
 count = 0
 tracker = 1
 # place circles first
-while (count < numcircles): # time out if over some max # of iterations
-	i += 1
+while (count < numcircles) and (tracker < iterations): # time out if over some max # of iterations
 #	print("Number of nonzero:", np.count_nonzero(circles))
 
 	# generate circle
@@ -147,16 +148,13 @@ while (count < numcircles): # time out if over some max # of iterations
 			count += 1
 			print("Circles:", circles)
 
-
-
 # generate dots
 count = 0
 x, y = np.mgrid[0:12:.01, 0:12:.01]
 pos = np.dstack((x, y))
 
-while (count < numdots):
+while (count < numdots) and (tracker < iterations):
 #	print("Nonzero dots:", np.count_nonzero(dots))
-	i += 1
 
 	k = np.amax(np.divide(getpx(pos), getqx(pos)))
 	samples = np.zeros([1, 2])
