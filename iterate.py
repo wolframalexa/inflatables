@@ -62,16 +62,15 @@ def followsRules(circles, points):
 				out = False
 				break
 
+		counter = 0 # use counter rather than t/f bc circle should intersect itself
 		for circle2 in circles: # check that circles do not intersect
-			dist = (circle[0] - circle2[0]) ** 2 + (circle[1] - circle2[1]) ** 2
-			rad = (circle[2] + circle2[2]) ** 2;
-
-			smaller = min(circle[2], circle2[2])
-			larger = max(circle[2], circle2[2])
-
-			if (dist >= rad):
-				out = False
+			dist = ((circle[0]-circle2[0])**2 + (circle[1]-circle2[1])**2)**0.5
+			if dist <= circle[2] + circle2[2]:
+				counter += 1
+			if counter > 1:
+				print(circle, circle2)
 				print("Circles intersect")
+				out = False
 				break
 
 #			if math.sqrt(dist) + smaller <= larger:
@@ -137,8 +136,8 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 	# generate circle
 	rad = np.random.uniform(1,2) # random circle radius
-	x = np.random.uniform(1,11)
-	y = np.random.uniform(1,11)
+	x = np.random.uniform(3,9)
+	y = np.random.uniform(3,9)
 
 	curr = np.array([x, y, rad])
 #	print("Current:", curr)
