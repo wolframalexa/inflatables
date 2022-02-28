@@ -66,6 +66,12 @@ def followsRules(circles, points):
 			if (dist >= rad + interlim):
 			        out = False
 				print("Circles intersect")
+				break
+
+			if (math.sqrt(dist) + circle2[2] <= circle[2]) or (math.sqrt(dist) + circle[2] <= circle2[2]):
+				out = False
+				print("One circle inside another")
+				break
 	return(out)
 
 def itergraph(circles, points):
@@ -139,7 +145,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('images/img' + str(tracker) + '.png')
+	#plt.savefig('images/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -169,7 +175,7 @@ while (count < numdots) and (tracker < iterations):
 		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-		plt.savefig('images/img' + str(tracker) + '.png')
+		#plt.savefig('images/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
