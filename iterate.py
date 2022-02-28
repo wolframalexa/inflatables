@@ -69,7 +69,7 @@ def followsRules(circles, points):
 			smaller = min(circle[2], circle2[2])
 			larger = max(circle[2], circle2[2])
 
-			if (dist >= rad + interlim):
+			if (dist >= rad):
 				out = False
 				print("Circles intersect")
 				break
@@ -150,7 +150,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('images2/img' + str(tracker) + '.png')
+	plt.savefig('images3/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -180,7 +180,7 @@ while (count < numdots) and (tracker < iterations):
 #		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-		plt.savefig('images2/img' + str(tracker) + '.png')
+		plt.savefig('images3/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
