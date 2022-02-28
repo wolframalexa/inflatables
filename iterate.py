@@ -72,10 +72,10 @@ def followsRules(circles, points):
 				print("Circles intersect")
 				break
 
-			if math.sqrt(dist) + smaller <= larger:
-				out = False
-				print("One circle inside another")
-				break
+#			if math.sqrt(dist) + smaller <= larger:
+#				out = False
+#				print("One circle inside another")
+#				break
 	return(out)
 
 def itergraph(circles, points):
