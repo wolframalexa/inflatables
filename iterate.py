@@ -1,3 +1,5 @@
+import os
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -68,7 +70,7 @@ def followsRules(circles, points):
 			larger = max(circle[2], circle2[2])
 
 			if (dist >= rad + interlim):
-			        out = False
+				out = False
 				print("Circles intersect")
 				break
 
@@ -105,11 +107,10 @@ def incircle(point, circle):
 
 # Mixture distribution (aka u can make the means and covariance matrix anything that you want)
 def getpx(pos):
-	center1 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
-	center2 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
-	center3 = [np.random.uniform(0, 12), np.random.uniform(0, 12)]
+	center1 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
+	center2 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
+	center3 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
 	return multivariate_normal.pdf(pos, center1, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center2, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center3, [[1, 0], [0, 1]])
-	return 0
 
 # Large gaussian encompassing the entire mixture
 def getqx(pos):
@@ -117,8 +118,8 @@ def getqx(pos):
 
 
 iterations = 20
-numcircles = 1
-numdots = 7
+numcircles = 2
+numdots = 4
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -142,21 +143,21 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 	curr = np.array([x, y, rad])
 #	print("Current:", curr)
 #	print("Proposed circles:", pro_circles)
-	print(count)
+#	print(count)
 #	print("Proposed circles:", pro_circles)
 	pro_circles = circles
 	pro_circles[count, :] = curr
 
 
 	itergraph(pro_circles, pro_dots)
-	#plt.savefig('images/img' + str(tracker) + '.png')
+	plt.savefig('images2/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles[:count+1, :], []):
 			circles[count, :] = curr
 			count += 1
-			print("Circles:", circles)
+#			print("Circles:", circles)
 
 # generate dots
 count = 0
@@ -176,15 +177,19 @@ while (count < numdots) and (tracker < iterations):
 
 	if u <= getpx(test):
 		pro_dots[count, :] = test
-		print("Proposed dots:", pro_dots)
+#		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-		#plt.savefig('images/img' + str(tracker) + '.png')
+		plt.savefig('images2/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
 		if followsRules(circles, pro_dots[:count+1, :]):
 			dots[count, :] = test
 			count += 1
-			print("Dots:", dots)
+#			print("Dots:", dots)
 		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
+
+
+print("Dots:", dots)
+print("Circles:", circles)
