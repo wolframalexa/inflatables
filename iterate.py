@@ -119,7 +119,7 @@ def getqx(pos):
 
 iterations = 1000
 numcircles = 3
-numdots = 12
+numdots = 6
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -131,6 +131,7 @@ count = 0
 tracker = 1
 # place circles first
 while (count < numcircles) and (tracker < iterations): # time out if over some max # of iterations
+	print(tracker)
 	# generate circle
 	rad = np.random.uniform(0.5,1.5) # random circle radius
 	x = np.random.uniform(3,9)
@@ -142,7 +143,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('image/img' + str(tracker) + '.png')
+	plt.savefig('image2/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -156,6 +157,7 @@ x, y = np.mgrid[0:12:.01, 0:12:.01]
 pos = np.dstack((x, y))
 
 while (count < numdots) and (tracker < iterations):
+	print(tracker)
 	k = np.amax(np.divide(getpx(pos), getqx(pos)))
 	samples = np.zeros([1, 2])
 
@@ -168,7 +170,7 @@ while (count < numdots) and (tracker < iterations):
 		pro_dots[count, :] = test
 
 		itergraph(circles, pro_dots)
-		plt.savefig('image/img' + str(tracker) + '.png')
+		plt.savefig('image2/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
