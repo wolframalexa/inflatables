@@ -9,7 +9,7 @@ def followsRules(circles, points):
 	# format of circles: [[x, y, rad], ]
 	# format of points: [[x, y], ]
 
-	edgelim = 1 # distance to edge [in]
+	edgelim = 0.75 # distance to edge [in]
 	interlim = 1.5 # distance from element to element [in]
 
 	if points is None:
@@ -40,6 +40,12 @@ def followsRules(circles, points):
 				if incircle(point, circle):
 					out = False
 #					print("Point in circle")
+					break
+
+				dist = (((point[0] - circle[0])**2) + ((point[1] - circle[1])**2))**(1/2) - circle[2]
+				if dist < interlim:
+					out = False
+					print("Point too close to circle")
 					break
 
 	for circle in circles:
@@ -119,7 +125,7 @@ def getqx(pos):
 
 iterations = 1000
 numcircles = 3
-numdots = 6
+numdots = 8
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -133,7 +139,7 @@ tracker = 1
 while (count < numcircles) and (tracker < iterations): # time out if over some max # of iterations
 	print(tracker)
 	# generate circle
-	rad = np.random.uniform(0.5,1.5) # random circle radius
+	rad = 2.25/2
 	x = np.random.uniform(3,9)
 	y = np.random.uniform(3,9)
 
