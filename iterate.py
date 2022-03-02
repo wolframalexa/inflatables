@@ -125,7 +125,7 @@ def getqx(pos):
 
 iterations = 1000
 numcircles = 3
-numdots = 8
+numdots = 10
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
