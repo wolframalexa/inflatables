@@ -1,5 +1,3 @@
-import os
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import math
@@ -119,47 +117,38 @@ def getqx(pos):
 	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 20
-numcircles = 2
-numdots = 4
+iterations = 100
+numcircles = 3
+numdots = 12
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
 
 pro_circles = np.zeros((numcircles, 3)) # proposed circles and dots
-# print("Proposed circles initialized:", pro_circles)
 pro_dots = np.zeros((numdots, 2))
-# print("Proposed Dots Initialized:", pro_dots)
 
 count = 0
 tracker = 1
 # place circles first
 while (count < numcircles) and (tracker < iterations): # time out if over some max # of iterations
-#	print("Number of nonzero:", np.count_nonzero(circles))
-
 	# generate circle
 	rad = np.random.uniform(1,2) # random circle radius
 	x = np.random.uniform(3,9)
 	y = np.random.uniform(3,9)
 
 	curr = np.array([x, y, rad])
-#	print("Current:", curr)
-#	print("Proposed circles:", pro_circles)
-#	print(count)
-#	print("Proposed circles:", pro_circles)
 	pro_circles = circles
 	pro_circles[count, :] = curr
 
 
 	itergraph(pro_circles, pro_dots)
-#	plt.savefig('images3/img' + str(tracker) + '.png')
+	plt.savefig('image/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
 	if followsRules(pro_circles[:count+1, :], []):
 			circles[count, :] = curr
 			count += 1
-#			print("Circles:", circles)
 
 # generate dots
 count = 0
@@ -167,8 +156,6 @@ x, y = np.mgrid[0:12:.01, 0:12:.01]
 pos = np.dstack((x, y))
 
 while (count < numdots) and (tracker < iterations):
-#	print("Nonzero dots:", np.count_nonzero(dots))
-
 	k = np.amax(np.divide(getpx(pos), getqx(pos)))
 	samples = np.zeros([1, 2])
 
@@ -179,19 +166,16 @@ while (count < numdots) and (tracker < iterations):
 
 	if u <= getpx(test):
 		pro_dots[count, :] = test
-#		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-#		plt.savefig('images3/img' + str(tracker) + '.png')
+		plt.savefig('image/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
 		if followsRules(circles, pro_dots[:count+1, :]):
 			dots[count, :] = test
 			count += 1
-#			print("Dots:", dots)
 		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
-
 
 print("Dots:", dots)
 print("Circles:", circles)
