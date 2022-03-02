@@ -10,7 +10,7 @@ def followsRules(circles, points):
 	# format of points: [[x, y], ]
 
 	edgelim = 1 # distance to edge [in]
-	interlim = 2 # distance from element to element [in]
+	interlim = 1.5 # distance from element to element [in]
 
 	if points is None:
 		pass
