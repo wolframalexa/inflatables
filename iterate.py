@@ -117,7 +117,7 @@ def getqx(pos):
 	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 100
+iterations = 1000
 numcircles = 3
 numdots = 12
 
