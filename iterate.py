@@ -10,7 +10,7 @@ def followsRules(circles, points):
 	# format of points: [[x, y], ]
 
 	edgelim = 1 # distance to edge [in]
-	interlim = 1 # distance from element to element [in]
+	interlim = 2 # distance from element to element [in]
 
 	if points is None:
 		pass
@@ -20,7 +20,7 @@ def followsRules(circles, points):
 			# print(point)
 			if (point[0] > 12 - edgelim) or (point[0] < edgelim) or (point[1] > 12 - edgelim) or (point[1] < edgelim):
 				out = False
-				print("Too close to edge")
+#				print("Too close to edge")
 				break
 
 			# element is not too close to other elements
@@ -33,13 +33,13 @@ def followsRules(circles, points):
 
 				if counter > 1:
 					out = False
-					print("Too close to others")
+#					print("Too close to others")
 					break
 
 			for circle in circles:
 				if incircle(point, circle):
 					out = False
-					print("Point in circle")
+#					print("Point in circle")
 					break
 
 	for circle in circles:
@@ -51,7 +51,7 @@ def followsRules(circles, points):
 
 		for i in extremes:
 			if (i[0] > 12 - edgelim) or (i[0] < edgelim):
-				print("Circle too close to edge")
+#				print("Circle too close to edge")
 				out = False
 				break
 
@@ -63,7 +63,7 @@ def followsRules(circles, points):
 			if incircle(point2, surround):
 				counter += 1
 			if counter > 1:
-				print("circle too close to others")
+#				print("circle too close to others")
 				out = False
 				break
 
@@ -73,8 +73,8 @@ def followsRules(circles, points):
 			if dist <= circle[2] + circle2[2] + interlim:
 				counter += 1
 			if counter > 1:
-				print(circle, circle2)
-				print("Circles intersect")
+#				print(circle, circle2)
+#				print("Circles intersect")
 				out = False
 				break
 
