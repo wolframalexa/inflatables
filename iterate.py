@@ -132,7 +132,7 @@ tracker = 1
 # place circles first
 while (count < numcircles) and (tracker < iterations): # time out if over some max # of iterations
 	# generate circle
-	rad = np.random.uniform(1,2) # random circle radius
+	rad = np.random.uniform(0.5,1.5) # random circle radius
 	x = np.random.uniform(3,9)
 	y = np.random.uniform(3,9)
 
