@@ -143,7 +143,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('image2/img' + str(tracker) + '.png')
+	plt.savefig('image3/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -170,7 +170,7 @@ while (count < numdots) and (tracker < iterations):
 		pro_dots[count, :] = test
 
 		itergraph(circles, pro_dots)
-		plt.savefig('image2/img' + str(tracker) + '.png')
+		plt.savefig('image3/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
