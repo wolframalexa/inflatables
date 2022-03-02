@@ -38,6 +38,12 @@ def followsRules(circles, points):
 					print("Too close to others")
 					break
 
+			for circle in circles:
+				if incircle(point, circle):
+					out = False
+					print("Point in circle")
+					break
+
 	for circle in circles:
 		# element is not too close to edge
 		x = circle[0]
@@ -54,6 +60,7 @@ def followsRules(circles, points):
 		# element is not too close to other elements
 		surround = [x, y, rad + interlim]
 		counter = 0 # use counter rather than t/f bc the point should be within its own circle (when point = point2)
+
 		for point2 in points:
 			if incircle(point2, surround):
 				counter += 1
@@ -65,7 +72,7 @@ def followsRules(circles, points):
 		counter = 0 # use counter rather than t/f bc circle should intersect itself
 		for circle2 in circles: # check that circles do not intersect
 			dist = ((circle[0]-circle2[0])**2 + (circle[1]-circle2[1])**2)**0.5
-			if dist <= circle[2] + circle2[2]:
+			if dist <= circle[2] + circle2[2] + interlim:
 				counter += 1
 			if counter > 1:
 				print(circle, circle2)
@@ -73,10 +80,6 @@ def followsRules(circles, points):
 				out = False
 				break
 
-#			if math.sqrt(dist) + smaller <= larger:
-#				out = False
-#				print("One circle inside another")
-#				break
 	return(out)
 
 def itergraph(circles, points):
@@ -149,7 +152,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('images3/img' + str(tracker) + '.png')
+#	plt.savefig('images3/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -179,7 +182,7 @@ while (count < numdots) and (tracker < iterations):
 #		print("Proposed dots:", pro_dots)
 
 		itergraph(circles, pro_dots)
-		plt.savefig('images3/img' + str(tracker) + '.png')
+#		plt.savefig('images3/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
