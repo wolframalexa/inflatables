@@ -111,21 +111,24 @@ def incircle(point, circle):
 	else:
 		return False
 
-# Mixture distribution (aka u can make the means and covariance matrix anything that you want)
-def getpx(pos):
-	center1 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
-	center2 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
-	center3 = [np.random.uniform(1, 11), np.random.uniform(1, 11)]
-	return multivariate_normal.pdf(pos, center1, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center2, [[1, 0], [0, 1]]) + multivariate_normal.pdf(pos, center3, [[1, 0], [0, 1]])
+# Mixture distribution
+def getpx(pos, circles, dots):
+	print(circles[:, :2], dots)
+	centers = np.concatenate((circles[:,:2], dots), axis = 0)
+	func = 0
+
+	for center in centers:
+		func += multivariate_normal.pdf(pos, center, [[1,0], [0, 1]])
+	return func
 
 # Large gaussian encompassing the entire mixture
 def getqx(pos):
 	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 200
-numcircles = 3
-numdots = 10
+iterations = 10
+numcircles = 1
+numdots = 3
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -149,7 +152,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-	plt.savefig('image2/img' + str(tracker) + '.png')
+#	plt.savefig('image2/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -164,7 +167,7 @@ pos = np.dstack((x, y))
 
 while (count < numdots) and (tracker < iterations):
 	print(tracker)
-	k = np.amax(np.divide(getpx(pos), getqx(pos)))
+	k = np.amax(np.divide(getpx(pos, circles, pro_dots), getqx(pos)))
 	samples = np.zeros([1, 2])
 
 	test = np.zeros([1,2])
@@ -172,11 +175,11 @@ while (count < numdots) and (tracker < iterations):
 	u = np.random.uniform(0, (k*getqx(test)))
 	pro_dots = dots
 
-	if u <= getpx(test):
+	if u > getpx(test, circles, pro_dots):
 		pro_dots[count, :] = test
 
 		itergraph(circles, pro_dots)
-		plt.savefig('image2/img' + str(tracker) + '.png')
+#		plt.savefig('image2/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
