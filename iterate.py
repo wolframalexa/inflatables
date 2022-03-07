@@ -126,9 +126,9 @@ def getqx(pos):
 	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 10
-numcircles = 1
-numdots = 3
+iterations = 200
+numcircles = 3
+numdots = 10
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -152,7 +152,7 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 
 
 	itergraph(pro_circles, pro_dots)
-#	plt.savefig('image2/img' + str(tracker) + '.png')
+	plt.savefig('antirejection/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -179,7 +179,7 @@ while (count < numdots) and (tracker < iterations):
 		pro_dots[count, :] = test
 
 		itergraph(circles, pro_dots)
-#		plt.savefig('image2/img' + str(tracker) + '.png')
+		plt.savefig('antirejection/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
