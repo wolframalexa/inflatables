@@ -128,7 +128,7 @@ def getqx(pos):
 
 iterations = 200
 numcircles = 3
-numdots = 10
+numdots = 12
 
 circles = np.zeros((numcircles, 3))
 dots = np.zeros((numdots, 2))
@@ -151,8 +151,8 @@ while (count < numcircles) and (tracker < iterations): # time out if over some m
 	pro_circles[count, :] = curr
 
 
-	itergraph(pro_circles, pro_dots)
-	plt.savefig('familygif/img' + str(tracker) + '.png')
+#	itergraph(pro_circles, pro_dots)
+#	plt.savefig('familygif/img' + str(tracker) + '.png')
 	tracker += 1
 
 	# meets configuration? if yes - then accept
@@ -178,8 +178,8 @@ while (count < numdots) and (tracker < iterations):
 	if u > getpx(test, circles, pro_dots):
 		pro_dots[count, :] = test
 
-		itergraph(circles, pro_dots)
-		plt.savefig('familygif/img' + str(tracker) + '.png')
+#		itergraph(circles, pro_dots)
+#		plt.savefig('familygif/img' + str(tracker) + '.png')
 		tracker += 1
 
 		# check if follows rules
@@ -187,6 +187,9 @@ while (count < numdots) and (tracker < iterations):
 			dots[count, :] = test
 			count += 1
 		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
+
+itergraph(circles, dots)
+plt.savefig('family/img4.png')
 
 print("Dots:", dots)
 print("Circles:", circles)
