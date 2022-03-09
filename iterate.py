@@ -126,7 +126,7 @@ def getqx(pos):
 	return multivariate_normal([6, 6], [[12, 0], [0, 12]]).pdf(pos)
 
 
-iterations = 200
+iterations = 400
 numcircles = 3
 numdots = 12
 
@@ -189,7 +189,7 @@ while (count < numdots) and (tracker < iterations):
 		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
 
 itergraph(circles, dots)
-plt.savefig('family/img6.png')
+plt.savefig('family/img23.png')
 
 print("Dots:", dots)
 print("Circles:", circles)
