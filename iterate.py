@@ -189,7 +189,7 @@ while (count < numdots) and (tracker < iterations):
 		# else, pro_dots[count,:] is replaced at the following loop so no need to handle
 
 itergraph(circles, dots)
-plt.savefig('family/img4.png')
+plt.savefig('family/img6.png')
 
 print("Dots:", dots)
 print("Circles:", circles)
